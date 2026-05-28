@@ -1,0 +1,946 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>章祉轩 - 个人主页</title>
+<style>
+  :root {
+    --bg: #eaeaef;
+    --surface: #f5f5f8;
+    --surface2: #e8e8ee;
+    --border: #d6d6de;
+    --cyan: #006ea6;
+    --blue: #2b55d4;
+    --purple: #5c3ac4;
+    --text: #4a4a58;
+    --text-dim: #7a7a8a;
+    --text-bright: #181820;
+  }
+
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    font-family: "Inter", "PingFang SC", "Microsoft YaHei", "Helvetica Neue", sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.7;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ---------- 背景装饰 ---------- */
+  .bg-grid {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
+    background-image:
+      linear-gradient(rgba(0,0,0,0.025) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0,0,0,0.025) 1px, transparent 1px);
+    background-size: 64px 64px;
+    mask-image: radial-gradient(ellipse 80% 60% at 50% 0%, black 30%, transparent 70%);
+  }
+
+  .bg-glow {
+    position: fixed;
+    pointer-events: none;
+    z-index: 0;
+    width: 600px;
+    height: 600px;
+    border-radius: 50%;
+    filter: blur(180px);
+    opacity: 0.10;
+  }
+
+  .bg-glow--top {
+    top: -250px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--cyan);
+  }
+
+  .bg-glow--bottom {
+    bottom: -250px;
+    right: -100px;
+    background: var(--purple);
+  }
+
+  /* ---------- 布局 ---------- */
+  .container {
+    position: relative;
+    z-index: 1;
+    max-width: 880px;
+    margin: 0 auto;
+    padding: 0 24px;
+  }
+
+  /* ---------- 导航 ---------- */
+  .nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 100;
+    padding: 16px 0;
+    background: rgba(255,255,255,0.75);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .nav-inner {
+    max-width: 880px;
+    margin: 0 auto;
+    padding: 0 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .nav-logo {
+    font-size: 17px;
+    font-weight: 700;
+    color: var(--text-bright);
+    letter-spacing: -0.3px;
+  }
+
+  .nav-links {
+    display: flex;
+    gap: 28px;
+    list-style: none;
+  }
+
+  .nav-links a {
+    color: var(--text-dim);
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 500;
+    transition: color 0.2s;
+    position: relative;
+  }
+
+  .nav-links a:hover {
+    color: var(--cyan);
+  }
+
+  .nav-links a::after {
+    content: '';
+    position: absolute;
+    bottom: -4px;
+    left: 0;
+    width: 0;
+    height: 1.5px;
+    background: var(--cyan);
+    transition: width 0.25s ease;
+  }
+
+  .nav-links a:hover::after {
+    width: 100%;
+  }
+
+  /* ---------- Hero ---------- */
+  .hero {
+    padding: 160px 0 80px;
+    text-align: center;
+  }
+
+  .hero-badge {
+    display: inline-block;
+    padding: 6px 18px;
+    border: 1px solid var(--border);
+    border-radius: 50px;
+    font-size: 13px;
+    color: var(--cyan);
+    background: rgba(0,128,204,0.05);
+    margin-bottom: 28px;
+    letter-spacing: 0.5px;
+  }
+
+  .hero h1 {
+    font-size: 56px;
+    font-weight: 800;
+    color: var(--text-bright);
+    letter-spacing: -1.5px;
+    line-height: 1.15;
+    margin-bottom: 16px;
+  }
+
+  .hero h1 span {
+    background: linear-gradient(135deg, var(--cyan) 0%, var(--blue) 50%, var(--purple) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .hero-sub {
+    font-size: 18px;
+    color: var(--text-dim);
+    font-weight: 400;
+    margin-bottom: 36px;
+  }
+
+  .hero-tags {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+
+  .hero-tag {
+    padding: 6px 18px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    font-size: 13px;
+    color: var(--text);
+    transition: all 0.25s;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+  }
+
+  .hero-tag:hover {
+    border-color: var(--cyan);
+    background: rgba(0,128,204,0.04);
+    color: var(--cyan);
+  }
+
+  /* ---------- 通用 Section ---------- */
+  .section {
+    padding: 72px 0;
+  }
+
+  .section-label {
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 2.5px;
+    color: var(--cyan);
+    margin-bottom: 12px;
+  }
+
+  .section-title {
+    font-size: 32px;
+    font-weight: 700;
+    color: var(--text-bright);
+    letter-spacing: -0.6px;
+    margin-bottom: 40px;
+  }
+
+  /* ---------- 关于我 ---------- */
+  .about-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 40px;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.04);
+  }
+
+  .about-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+  }
+
+  .about-item {
+    display: flex;
+    gap: 14px;
+    align-items: flex-start;
+  }
+
+  .about-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    flex-shrink: 0;
+  }
+
+  .about-item-label {
+    font-size: 12px;
+    color: var(--text-dim);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 2px;
+  }
+
+  .about-item-value {
+    font-size: 15px;
+    color: var(--text-bright);
+    font-weight: 500;
+  }
+
+  .about-intro {
+    margin-top: 32px;
+    padding-top: 28px;
+    border-top: 1px solid var(--border);
+    font-size: 15px;
+    color: var(--text);
+    line-height: 1.9;
+  }
+
+  .about-intro strong {
+    color: var(--cyan);
+    font-weight: 600;
+  }
+
+  /* ---------- 求职意向 ---------- */
+  .intent-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 40px;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.04);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .intent-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, var(--cyan), var(--blue), var(--purple));
+  }
+
+  .intent-quote {
+    font-size: 20px;
+    font-weight: 600;
+    color: var(--text-bright);
+    line-height: 1.8;
+    text-align: center;
+    margin-bottom: 24px;
+  }
+
+  .intent-quote mark {
+    background: linear-gradient(180deg, transparent 60%, rgba(0,128,204,0.15) 60%);
+    color: inherit;
+  }
+
+  .intent-detail {
+    font-size: 14.5px;
+    color: var(--text);
+    line-height: 1.9;
+    text-align: center;
+    max-width: 640px;
+    margin: 0 auto;
+  }
+
+  .intent-detail strong {
+    color: var(--cyan);
+    font-weight: 600;
+  }
+
+  .intent-highlights {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 14px;
+    margin-top: 28px;
+  }
+
+  .intent-highlight {
+    text-align: center;
+    padding: 18px 12px;
+    background: var(--surface2);
+    border-radius: 10px;
+    border: 1px solid var(--border);
+  }
+
+  .intent-highlight-num {
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--cyan);
+    margin-bottom: 4px;
+  }
+
+  .intent-highlight-label {
+    font-size: 13px;
+    color: var(--text-dim);
+  }
+
+  /* ---------- 技能 ---------- */
+  .skills-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+  }
+
+  .skill-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 32px;
+    transition: border-color 0.3s, transform 0.3s, box-shadow 0.3s;
+    box-shadow: 0 1px 6px rgba(0,0,0,0.03);
+  }
+
+  .skill-card:hover {
+    border-color: rgba(0,128,204,0.35);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 16px rgba(0,0,0,0.06);
+  }
+
+  .skill-card-icon {
+    font-size: 28px;
+    margin-bottom: 16px;
+  }
+
+  .skill-card h3 {
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--text-bright);
+    margin-bottom: 12px;
+    letter-spacing: -0.3px;
+  }
+
+  .skill-card p {
+    font-size: 14px;
+    color: var(--text-dim);
+    line-height: 1.75;
+  }
+
+  .skill-bar-wrap {
+    margin-top: 18px;
+  }
+
+  .skill-bar-label {
+    display: flex;
+    justify-content: space-between;
+    font-size: 12px;
+    color: var(--text-dim);
+    margin-bottom: 6px;
+  }
+
+  .skill-bar {
+    height: 4px;
+    background: var(--surface2);
+    border-radius: 4px;
+    overflow: hidden;
+  }
+
+  .skill-bar-fill {
+    height: 100%;
+    border-radius: 4px;
+    background: linear-gradient(90deg, var(--cyan), var(--blue));
+    transition: width 1.2s ease;
+  }
+
+  /* ---------- 个人优势 ---------- */
+  .highlights {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    margin-top: 20px;
+  }
+
+  .highlight-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 28px 24px;
+    text-align: center;
+    transition: border-color 0.3s, box-shadow 0.3s;
+    box-shadow: 0 1px 6px rgba(0,0,0,0.03);
+  }
+
+  .highlight-card:hover {
+    border-color: rgba(108,72,224,0.35);
+    box-shadow: 0 4px 16px rgba(0,0,0,0.06);
+  }
+
+  .highlight-num {
+    font-size: 36px;
+    font-weight: 800;
+    background: linear-gradient(135deg, var(--cyan), var(--purple));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    letter-spacing: -1px;
+    margin-bottom: 6px;
+  }
+
+  .highlight-label {
+    font-size: 13px;
+    color: var(--text-dim);
+  }
+
+  /* ---------- 联系方式 ---------- */
+  .contact-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+  }
+
+  .contact-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 28px 24px;
+    text-align: center;
+    text-decoration: none;
+    display: block;
+    transition: all 0.3s;
+    box-shadow: 0 1px 6px rgba(0,0,0,0.03);
+    cursor: pointer;
+  }
+
+  .contact-card:hover {
+    border-color: var(--cyan);
+    background: var(--surface2);
+    box-shadow: 0 4px 16px rgba(0,0,0,0.06);
+  }
+
+  .contact-icon {
+    font-size: 24px;
+    margin-bottom: 10px;
+  }
+
+  .contact-label {
+    font-size: 12px;
+    color: var(--text-dim);
+    letter-spacing: 1px;
+    margin-bottom: 4px;
+  }
+
+  .contact-value {
+    font-size: 14px;
+    color: var(--text-bright);
+    font-weight: 500;
+  }
+
+  /* ---------- 项目经历 ---------- */
+  .projects-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+  }
+
+  .project-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 32px;
+    transition: border-color 0.3s, transform 0.3s, box-shadow 0.3s;
+    box-shadow: 0 1px 6px rgba(0,0,0,0.03);
+  }
+
+  .project-card:hover {
+    border-color: rgba(0,128,204,0.35);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 16px rgba(0,0,0,0.06);
+  }
+
+  .project-card h3 {
+    font-size: 17px;
+    font-weight: 700;
+    color: var(--text-bright);
+    margin-bottom: 10px;
+    letter-spacing: -0.3px;
+  }
+
+  .project-card p {
+    font-size: 14px;
+    color: var(--text);
+    line-height: 1.8;
+  }
+
+  .project-card .project-tech {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: 14px;
+  }
+
+  .project-tech span {
+    padding: 3px 10px;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    font-size: 12px;
+    color: var(--cyan);
+    font-weight: 500;
+  }
+
+  /* ---------- Footer ---------- */
+  .footer {
+    text-align: center;
+    padding: 48px 0;
+    border-top: 1px solid var(--border);
+    margin-top: 40px;
+  }
+
+  .footer-text {
+    font-size: 14px;
+    color: var(--text-dim);
+    margin-bottom: 6px;
+  }
+
+  .footer-heart {
+    font-size: 15px;
+    color: var(--cyan);
+    font-weight: 600;
+  }
+
+  /* ---------- 渐显动画 ---------- */
+  .reveal {
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+  }
+
+  .reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* ---------- 响应式 ---------- */
+  @media (max-width: 768px) {
+    .hero h1 {
+      font-size: 36px;
+    }
+
+    .about-grid,
+    .skills-grid,
+    .highlights,
+    .contact-grid,
+    .intent-highlights,
+    .projects-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .section {
+      padding: 48px 0;
+    }
+
+    .nav-links {
+      display: none;
+    }
+
+    .intent-quote {
+      font-size: 17px;
+    }
+  }
+</style>
+</head>
+<body>
+
+<div class="bg-grid"></div>
+<div class="bg-glow bg-glow--top"></div>
+<div class="bg-glow bg-glow--bottom"></div>
+
+<!-- 导航 -->
+<nav class="nav">
+  <div class="nav-inner">
+    <div class="nav-logo">ZX.Zhang</div>
+    <ul class="nav-links">
+      <li><a href="#about">关于我</a></li>
+      <li><a href="#intent">求职意向</a></li>
+      <li><a href="#skills">专业技能</a></li>
+      <li><a href="#projects">项目经历</a></li>
+      <li><a href="#contact">联系方式</a></li>
+    </ul>
+  </div>
+</nav>
+
+<main class="container">
+
+  <!-- Hero -->
+  <section class="hero">
+    <div class="hero-badge">OPEN TO WORK &middot; 可长期实习 &middot; 尽快到岗</div>
+    <h1>你好，我是<br><span>章祉轩</span></h1>
+    <p class="hero-sub">浙江万里学院 &middot; 电子信息工程 &middot; 大三在读</p>
+    <div class="hero-tags">
+      <span class="hero-tag">嵌入式系统设计</span>
+      <span class="hero-tag">PCB 设计与 Layout</span>
+      <span class="hero-tag">Python / C 开发</span>
+      <span class="hero-tag">硬件焊接与调试</span>
+      <span class="hero-tag">AI 工程化应用</span>
+    </div>
+  </section>
+
+  <!-- 关于我 -->
+  <section class="section" id="about">
+    <div class="section-label">About</div>
+    <h2 class="section-title">关于我</h2>
+
+    <div class="about-card reveal">
+      <div class="about-grid">
+        <div class="about-item">
+          <div class="about-icon">&#127891;</div>
+          <div>
+            <div class="about-item-label">学校</div>
+            <div class="about-item-value">浙江万里学院</div>
+          </div>
+        </div>
+        <div class="about-item">
+          <div class="about-icon">&#128218;</div>
+          <div>
+            <div class="about-item-label">专业</div>
+            <div class="about-item-value">电子信息工程</div>
+          </div>
+        </div>
+        <div class="about-item">
+          <div class="about-icon">&#127939;</div>
+          <div>
+            <div class="about-item-label">年级</div>
+            <div class="about-item-value">大三（2026 年）</div>
+          </div>
+        </div>
+        <div class="about-item">
+          <div class="about-icon">&#128205;</div>
+          <div>
+            <div class="about-item-label">所在地</div>
+            <div class="about-item-value">浙江万里学院钱湖校区</div>
+          </div>
+        </div>
+        <div class="about-item">
+          <div class="about-icon">&#127760;</div>
+          <div>
+            <div class="about-item-label">语言能力</div>
+            <div class="about-item-value">CET-4 英语四级</div>
+          </div>
+        </div>
+        <div class="about-item">
+          <div class="about-icon">&#128269;</div>
+          <div>
+            <div class="about-item-label">主修课程</div>
+            <div class="about-item-value">信号与系统 / 数字信号处理 / 数据采集与传输</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="about-intro">
+        <p>
+          我是章祉轩，一名<strong>电子信息工程</strong>专业的大三学生，具备扎实的专业背景。主修<strong>信号与系统、数字信号处理及数据采集与传输</strong>等核心课程，并具备使用 <strong>Python 和 C 语言</strong>进行算法实现与工程实践的能力。
+        </p>
+        <p style="margin-top:12px;">
+          技术方向上，我兼顾<strong>嵌入式系统设计</strong>（高性能单片机、传感器）、<strong>上位机软件开发</strong>（Python、C 语言）以及<strong>电子硬件设计</strong>（PCB 设计、模电、数电）与 <strong>AI 工程化应用</strong>，具备从原理图设计、PCB 到实物焊接调试的完整硬件实践能力。
+        </p>
+        <p style="margin-top:12px;">
+          性格方面，我<strong>开朗沉稳、极具钻研精神</strong>，不惧加班与挑战陌生领域，始终将解决实际问题和积累实战经验放在首位。善于利用 <strong>Claude 等前沿 AI 工具</strong>高效填补知识盲区，具备快速上手新技术的学习能力与积极进取的职业素养。
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 求职意向 -->
+  <section class="section" id="intent">
+    <div class="section-label">Job Intention</div>
+    <h2 class="section-title">求职意向</h2>
+
+    <div class="intent-card reveal">
+      <p class="intent-quote">
+        &#8220;<mark>希望能给一个机会</mark>，让我用最踏实的态度，<br>从最基础的事情做起，<mark>一步步成长为团队中值得信赖的一员</mark>。&#8221;
+      </p>
+      <div class="intent-detail">
+        <p>
+          我深知作为一名未毕业的本科生，理论与实际之间仍存在差距。因此，我<strong>非常珍惜这次实习机会</strong>，做好了从最基础的技术工作做起的准备，一步步成长为团队中值得信赖的一员。
+        </p>
+        <p style="margin-top:12px;">
+          我具备良好的工程素养，性格沉稳踏实，拥有<strong>极强的责任心与抗压能力</strong>。无论是跟岗学习，还是项目现场的辅助调试，我都愿意投入百分之百的热情去学习和完成。能够适应快节奏的工作环境及项目现场的调试需求。持有<strong>从零开始的空杯心态</strong>，愿意从基层岗位做起，在实践中快速积累经验并解决实际问题，迅速融入团队创造价值。
+        </p>
+        <p style="margin-top:12px;">
+          如果您愿意给我一次面试的机会，我会用行动证明您的眼光没有错。<strong>感谢您花时间看到这里。</strong>
+        </p>
+      </div>
+
+      <div class="intent-highlights">
+        <div class="intent-highlight">
+          <div class="intent-highlight-num">&#128197;</div>
+          <div class="intent-highlight-label">可尽快到岗</div>
+        </div>
+        <div class="intent-highlight">
+          <div class="intent-highlight-num">&#9200;</div>
+          <div class="intent-highlight-label">长期实习 &ge; 6 个月</div>
+        </div>
+        <div class="intent-highlight">
+          <div class="intent-highlight-num">&#127919;</div>
+          <div class="intent-highlight-label">硬件助理 / PCB 设计 / 电子工程方向</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 技能 -->
+  <section class="section" id="skills">
+    <div class="section-label">Skills</div>
+    <h2 class="section-title">专业技能</h2>
+
+    <div class="skills-grid">
+
+      <div class="skill-card reveal">
+        <div class="skill-card-icon">&#128268;</div>
+        <h3>嵌入式系统与硬件设计</h3>
+        <p>掌握 C 语言与 Python 编程，能熟练使用 <strong>Keil</strong> 及 <strong>Quartus II</strong> 进行嵌入式开发；熟练掌握 <strong>Altium Designer</strong> 进行原理图库/封装库建立绘制与多层 PCB 布局布线，熟悉模电/数电及电子线路辅助设计全流程。</p>
+        <div class="skill-bar-wrap">
+          <div class="skill-bar-label"><span>Altium Designer / Keil / Quartus II</span><span>熟练</span></div>
+          <div class="skill-bar"><div class="skill-bar-fill" style="width:85%"></div></div>
+        </div>
+        <div class="skill-bar-wrap" style="margin-top:10px;">
+          <div class="skill-bar-label"><span>Python / C 语言</span><span>熟练</span></div>
+          <div class="skill-bar"><div class="skill-bar-fill" style="width:78%"></div></div>
+        </div>
+      </div>
+
+      <div class="skill-card reveal">
+        <div class="skill-card-icon">&#128295;</div>
+        <h3>电子焊接与调试</h3>
+        <p>熟练掌握电子焊接工艺，能独立完成 0603/0402 封装贴片元件及 SOP/QFP 封装芯片的手工焊接；熟悉 PCB 板后期加工、组装与调试流程，具备良好的硬件故障排查与返修能力。</p>
+        <div class="skill-bar-wrap">
+          <div class="skill-bar-label"><span>手工焊接（0402/0603/SOP/QFP）</span><span>精通</span></div>
+          <div class="skill-bar"><div class="skill-bar-fill" style="width:90%"></div></div>
+        </div>
+        <div class="skill-bar-wrap" style="margin-top:10px;">
+          <div class="skill-bar-label"><span>硬件故障排查与返修</span><span>熟练</span></div>
+          <div class="skill-bar"><div class="skill-bar-fill" style="width:78%"></div></div>
+        </div>
+      </div>
+
+      <div class="skill-card reveal">
+        <div class="skill-card-icon">&#129504;</div>
+        <h3>上位机软件与 AI 工程化应用</h3>
+        <p>具备上位机软件开发能力（Python、C 语言），善于利用 <strong>Claude 等前沿 AI 工具</strong>辅助代码语法纠错与功能注释，高效填补知识盲区，能有效利用 AI 提升自学效率并解决程序报错问题。</p>
+        <div class="skill-bar-wrap">
+          <div class="skill-bar-label"><span>AI 辅助开发（Claude）</span><span>熟练</span></div>
+          <div class="skill-bar"><div class="skill-bar-fill" style="width:85%"></div></div>
+        </div>
+        <div class="skill-bar-wrap" style="margin-top:10px;">
+          <div class="skill-bar-label"><span>上位机软件开发</span><span>基础</span></div>
+          <div class="skill-bar"><div class="skill-bar-fill" style="width:62%"></div></div>
+        </div>
+      </div>
+
+      <div class="skill-card reveal">
+        <div class="skill-card-icon">&#128225;</div>
+        <h3>信号与系统 / 数据采集与传输</h3>
+        <p>主修信号与系统、数字信号处理及数据采集与传输等核心课程，具备扎实的理论基础，能够将信号处理算法与嵌入式系统相结合，应用于实际工程项目的信号采集与处理环节。</p>
+        <div class="skill-bar-wrap">
+          <div class="skill-bar-label"><span>信号与系统 / 数字信号处理</span><span>良好</span></div>
+          <div class="skill-bar"><div class="skill-bar-fill" style="width:72%"></div></div>
+        </div>
+        <div class="skill-bar-wrap" style="margin-top:10px;">
+          <div class="skill-bar-label"><span>数据采集与传输</span><span>良好</span></div>
+          <div class="skill-bar"><div class="skill-bar-fill" style="width:70%"></div></div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- 个人优势 -->
+  <section class="section" id="highlights">
+    <div class="section-label">Highlights</div>
+    <h2 class="section-title">个人优势</h2>
+
+    <div class="highlights">
+      <div class="highlight-card reveal">
+        <div class="highlight-num">&#128269;</div>
+        <div style="font-size:17px;font-weight:700;color:var(--text-bright);margin-bottom:6px;">钻研精神</div>
+        <div class="highlight-label">性格开朗沉稳，对待专业技术有着极强的钻研劲头</div>
+      </div>
+      <div class="highlight-card reveal">
+        <div class="highlight-num">&#128170;</div>
+        <div style="font-size:17px;font-weight:700;color:var(--text-bright);margin-bottom:6px;">不惧挑战</div>
+        <div class="highlight-label">不惧加班与陌生领域，注重解决实际问题与积累实战经验</div>
+      </div>
+      <div class="highlight-card reveal">
+        <div class="highlight-num">&#129504;</div>
+        <div style="font-size:17px;font-weight:700;color:var(--text-bright);margin-bottom:6px;">AI 赋能</div>
+        <div class="highlight-label">善于利用前沿 AI 工具高效学习，快速上手新技术</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 联系方式 -->
+  <section class="section" id="contact">
+    <div class="section-label">Contact</div>
+    <h2 class="section-title">联系方式</h2>
+
+    <div class="contact-grid">
+      <a href="tel:19519619582" class="contact-card reveal">
+        <div class="contact-icon">&#128222;</div>
+        <div class="contact-label">手机</div>
+        <div class="contact-value">195 1961 9582</div>
+      </a>
+      <a href="mailto:2179431553@qq.com" class="contact-card reveal">
+        <div class="contact-icon">&#9993;</div>
+        <div class="contact-label">邮箱</div>
+        <div class="contact-value">2179431553@qq.com</div>
+      </a>
+      <div class="contact-card reveal">
+        <div class="contact-icon">&#127968;</div>
+        <div class="contact-label">地址</div>
+        <div class="contact-value">浙江万里学院钱湖校区</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 项目经历 -->
+  <section class="section" id="projects">
+    <div class="section-label">Projects</div>
+    <h2 class="section-title">项目经历</h2>
+
+    <div class="projects-grid">
+
+      <div class="project-card reveal">
+        <h3>基于 89C51 的智能酒精检测系统</h3>
+        <p>采用 MQ-3 气敏传感器与 ADC0832 模数转换芯片构建信号采集电路，利用 AT89C51 单片机实现数据处理与逻辑控制；通过 LCD1602 实时显示浓度，并完成声光报警电路（三极管驱动蜂鸣器/LED），实现了酒精浓度的精准测量与超标预警。</p>
+        <div class="project-tech">
+          <span>AT89C51</span><span>MQ-3</span><span>ADC0832</span><span>LCD1602</span><span>Keil</span>
+        </div>
+      </div>
+
+      <div class="project-card reveal">
+        <h3>三相异步电机搭建</h3>
+        <p>掌握三相异步电机的内部结构与工作原理，独立完成电机的拆卸与装配工艺；熟练运用万用表等仪表进行绕组绝缘电阻测试及首末端判别；成功实现电机启动及正反转控制线路的安装、布线与通电调试，具备基础的电气故障排查能力。</p>
+        <div class="project-tech">
+          <span>电机拆装</span><span>万用表</span><span>正反转控制</span><span>线路布线</span>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <footer class="footer">
+    <p class="footer-text">&copy; 2026 章祉轩 &middot; 浙江万里学院 电子信息工程</p>
+    <p class="footer-heart">感谢您花时间了解我，期待与您的交流 &#9997;</p>
+  </footer>
+
+</main>
+
+<script>
+  // 渐显动画
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+      }
+    });
+  }, { threshold: 0.15 });
+
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+  setTimeout(() => {
+    document.querySelectorAll('.reveal').forEach(el => {
+      const rect = el.getBoundingClientRect();
+      if (rect.top < window.innerHeight) el.classList.add('visible');
+    });
+  }, 200);
+
+</script>
+
+</body>
+</html>
